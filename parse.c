@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:13:34 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/21 22:19:22 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/24 04:28:22 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,37 +61,36 @@ int	parse(int ac, char **av)
 	}
 	return (0);
 }
-void	init_philo(int argc, char **argv)
+void	init_philo(t_general *general, int argc, char **argv)
 {
-	t_general	*general;
-
-	general = malloc(sizeof(t_general));
-	if (!general)
-		return ;
+	int	i;
 
 	general->number_of_philosophers = ft_atoi(argv[1]);
 	general->time_to_die = ft_atoi(argv[2]);
 	general->time_to_eat = ft_atoi(argv[3]);
 	general->time_to_sleep = ft_atoi(argv[4]);
-
 	if (argc == 6)
 		general->must_eat_count = ft_atoi(argv[5]);
 	else
 		general->must_eat_count = -1;
-
 	general->all_philos = malloc(sizeof(pthread_t)
-		* general->number_of_philosophers);
-
+			* general->number_of_philosophers);
 	general->forks = malloc(sizeof(pthread_mutex_t)
-		* general->number_of_philosophers);
-
+			* general->number_of_philosophers);
 	general->philo_data = malloc(sizeof(t_philo)
-		* general->number_of_philosophers);
+			* general->number_of_philosophers);
+	general->print_lock = malloc(sizeof(pthread_mutex_t));		
+	general->start_time = now_time();
+	
+	i = 0;
+	while (i < general->number_of_philosophers)
+	{
+		general->philo_data[i].last_meal_time = (now_time());
+		i++;
+	}
 
 	if (!general->all_philos || !general->forks || !general->philo_data)
 		return ;
-
 	create_forks(general);
 	create_philo(general);
 }
-

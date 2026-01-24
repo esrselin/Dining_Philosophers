@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draft.c                                            :+:      :+:    :+:   */
+/*   daily.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:10:50 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/21 22:02:50 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/24 04:36:00 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	create_philo(t_general *general)
 {
 	int	i;
+
 	i = 0;
 	while (i < general->number_of_philosophers)
 	{
@@ -22,10 +23,10 @@ void	create_philo(t_general *general)
 		general->philo_data[i].l_fork = &general->forks[i];
 		general->philo_data[i].r_fork = &general->forks[(i + 1)
 			% general->number_of_philosophers];
-			
+		general->philo_data[i].general_data = general;
 		pthread_create(&general->all_philos[i], NULL, routine,
 			&general->philo_data[i]);
-			//threade structın kopyasını değil, adresini vermeliyiz.
+		// threade structın kopyasını değil, adresini vermeliyiz.
 		i++;
 	}
 }
@@ -40,8 +41,13 @@ void	create_forks(t_general *general)
 		pthread_mutex_init(&general->forks[i], NULL);
 		i++;
 	}
-	//mutexleri freele. 
+	pthread_mutex_init(general->print_lock, NULL);
+	// mutexleri freele.
 }
+/*
+al → ye → bırak → uyu → düşün → tekrar dene
+
+*/
 
 void	*routine(void *philo)
 {
@@ -53,26 +59,24 @@ void	*routine(void *philo)
 		if (phi->philo_id % 2 == 0)
 		{
 			pthread_mutex_lock(phi->l_fork);
-			printf("llu %d has taken a fork.\n", phi->philo_id);
-			pthread_mutex_lock(phi->r_fork); 
-			printf("llu %d has taken a fork.\n", phi->philo_id);
+			ft_printf(phi, "has taken a fork.\n");
+			pthread_mutex_lock(phi->r_fork);
+			ft_printf(phi, "has taken a fork.\n");
 		}
 		else
 		{
 			pthread_mutex_lock(phi->r_fork);
-			printf("llu %d has taken a fork.\n", phi->philo_id);
+			ft_printf(phi, "has taken a fork.\n");
 			pthread_mutex_lock(phi->l_fork);
-			printf("llu %d has taken a fork.\n", phi->philo_id);
+			ft_printf(phi, "has taken a fork.\n");
 		}
+		phi->last_meal_time = now_time();
+		ft_printf(phi, "is eating.\n");
+		my_sleep(phi->general_data->time_to_eat);
 		pthread_mutex_unlock(phi->l_fork);
-		pthread_mutex_unlock(phi->l_fork);
-		
-		// eating
-		// pthread_mutex_lock(phi->general_data->meal);
-		// my_usleep(phi->general_data.time_to_eat);
-		// printf("llu %d has is eating.\n", phi->philo_id);
-		// pthread_mutex_unlock(phi->general_data->meal);
-		// phi->is_death = 1;
-		// pthread_mutex_unlock(phi->general_data->meal);
+		pthread_mutex_unlock(phi->r_fork);
+		ft_printf(phi, "is sleeping.\n");
+		my_sleep(phi->general_data->time_to_sleep);
+		ft_printf(phi, "is thinking.\n");
 	}
 }

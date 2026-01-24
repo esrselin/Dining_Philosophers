@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/06 18:25:54 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/24 04:38:52 by esakgul          ###   ########.fr       */
+/*   Created: 2026/01/23 21:06:59 by esakgul           #+#    #+#             */
+/*   Updated: 2026/01/24 04:11:08 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+long long	now_time(void)
 {
-	t_general	*general;
+	struct timeval	t;
 
-	general = malloc(sizeof(t_general));
-	if (!general)
-		return (1);
-	if (parse(argc, argv))
-		return (1);
-	init_philo(general, argc, argv);
-	int i;
-	i =0;
-	while(i < general->number_of_philosophers)
-		pthread_join(general->all_philos[i++], NULL);
-	return (0);
+	gettimeofday(&t, NULL);
+	return (t.tv_sec * 1000 + t.tv_usec / 1000);
+}
+
+void	my_sleep(int time)
+{
+	long long	dest_time;
+
+	dest_time = now_time() + time;
+	while (now_time() < dest_time)
+		usleep(100);
 }
