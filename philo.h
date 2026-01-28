@@ -24,7 +24,7 @@ typedef struct s_general
 	pthread_mutex_t		is_dead_lock;
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		meal_lock;
-	
+
 }						t_general;
 
 typedef struct s_philo
@@ -49,4 +49,5 @@ void					ft_printf(t_philo *philo, char *s);
 void					*monitor(void *general);
 void					creating_monitor(t_general *general);
 void					print_dead(t_philo *philo);
+void					freendestroy(t_general *general);
 #endif

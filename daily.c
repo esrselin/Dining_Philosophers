@@ -6,17 +6,17 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:10:50 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/28 19:31:08 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/28 21:04:07 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /*
-1- must_eat_count implementasyonu
+1- must_eat_count implementasyonu - yapıldıııııııııııııı
 2- N = 1 philosopher edge case - yapıldıııı
-3- mutex destroy + free
-4- valgrind
+3- mutex destroy + free (?????)
+4- bonus??
 */
 
 void	create_philo(t_general *general)
@@ -33,7 +33,6 @@ void	create_philo(t_general *general)
 		general->philo_data[i].general_data = general;
 		pthread_create(&general->all_philos[i], NULL, routine,
 			&general->philo_data[i]);
-		// threade structın kopyasını değil, adresini vermeliyiz.
 		i++;
 	}
 }
@@ -51,7 +50,6 @@ void	create_forks(t_general *general)
 	pthread_mutex_init(&general->print_lock, NULL);
 	pthread_mutex_init(&general->is_dead_lock, NULL);
 	pthread_mutex_init(&general->meal_lock, NULL);
-	// mutexleri freele(?)
 }
 void	*routine(void *philo)
 {
@@ -120,13 +118,7 @@ void	creating_monitor(t_general *general)
 {
 	pthread_create(&general->is_dead_thread, NULL, monitor, general);
 }
-void	print_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->general_data->print_lock);
-	printf("%lld %d %s", now_time() - philo->general_data->start_time,
-		philo->philo_id, "died.\n");
-	pthread_mutex_unlock(&philo->general_data->print_lock);
-}
+
 void	*monitor(void *general)
 {
 	t_general	*gen;
@@ -137,7 +129,6 @@ void	*monitor(void *general)
 	gen = (t_general *)general;
 	while (1)
 	{
-		// stop oldu mu
 		pthread_mutex_lock(&gen->is_dead_lock);
 		if (gen->is_dead)
 		{
@@ -145,15 +136,12 @@ void	*monitor(void *general)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&gen->is_dead_lock);
-
-		// ölüm kontrolü
 		i = 0;
 		while (i < gen->number_of_philosophers)
 		{
 			pthread_mutex_lock(&gen->meal_lock);
 			last = gen->philo_data[i].last_meal_time;
 			pthread_mutex_unlock(&gen->meal_lock);
-
 			if (now_time() - last > gen->time_to_die)
 			{
 				set_stop(gen);
@@ -162,8 +150,6 @@ void	*monitor(void *general)
 			}
 			i++;
 		}
-
-		// must_eat kontrolü
 		if (gen->must_eat_count > 0)
 		{
 			all_full = 1;
@@ -174,9 +160,8 @@ void	*monitor(void *general)
 				if (gen->philo_data[i].meal_count < gen->must_eat_count)
 					all_full = 0;
 				pthread_mutex_unlock(&gen->meal_lock);
-
 				if (!all_full)
-					break;
+					break ;
 				i++;
 			}
 			if (all_full)
@@ -185,8 +170,6 @@ void	*monitor(void *general)
 				return (NULL);
 			}
 		}
-
 		usleep(1000);
 	}
 }
-
