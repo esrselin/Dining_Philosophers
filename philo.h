@@ -15,22 +15,22 @@ typedef struct s_general
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_count;
-	pthread_t			*all_philos;	
+	pthread_t			*all_philos;
 	pthread_mutex_t		*forks;
 	struct s_philo		*philo_data;
 	pthread_t			is_dead_thread;
 	long long			start_time;
 	int					is_dead;
-
 	pthread_mutex_t		is_dead_lock;
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		meal_lock;
-
+	
 }						t_general;
 
 typedef struct s_philo
 {
 	int					philo_id;
+	int					meal_count;
 	long long			last_meal_time;
 	pthread_mutex_t		*l_fork;
 	pthread_mutex_t		*r_fork;
@@ -48,5 +48,5 @@ long long				now_time(void);
 void					ft_printf(t_philo *philo, char *s);
 void					*monitor(void *general);
 void					creating_monitor(t_general *general);
-void	print_dead(t_philo *philo);
+void					print_dead(t_philo *philo);
 #endif
