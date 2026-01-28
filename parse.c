@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:13:34 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/24 04:28:22 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/28 02:52:17 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,19 @@ void	init_philo(t_general *general, int argc, char **argv)
 			* general->number_of_philosophers);
 	general->philo_data = malloc(sizeof(t_philo)
 			* general->number_of_philosophers);
-	general->print_lock = malloc(sizeof(pthread_mutex_t));		
 	general->start_time = now_time();
-	
+	// thread initle
+	general->is_dead = 0;
 	i = 0;
 	while (i < general->number_of_philosophers)
 	{
-		general->philo_data[i].last_meal_time = (now_time());
+		general->philo_data[i].last_meal_time = general->start_time;
 		i++;
 	}
-
 	if (!general->all_philos || !general->forks || !general->philo_data)
-		return ;
+	return ;
 	create_forks(general);
 	create_philo(general);
+	printf("deneme \n");
+	creating_monitor(general);
 }

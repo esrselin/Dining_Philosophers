@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 18:25:54 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/24 04:38:52 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/28 10:01:33 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_general	*general;
+	int			i;
 
 	general = malloc(sizeof(t_general));
 	if (!general)
@@ -22,9 +23,13 @@ int	main(int argc, char **argv)
 	if (parse(argc, argv))
 		return (1);
 	init_philo(general, argc, argv);
-	int i;
-	i =0;
-	while(i < general->number_of_philosophers)
+	i = 0;
+	while (i < general->number_of_philosophers)
+	{
 		pthread_join(general->all_philos[i++], NULL);
+		pthread_create(&general->is_dead_thread, NULL, monitor, general);
+	}
+	if (general->is_dead)
+		return 0;
 	return (0);
 }

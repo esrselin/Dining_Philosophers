@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 20:51:08 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/24 04:25:02 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/28 02:20:48 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,19 @@ int	ft_atoi(const char *str)
 	return (r * s);
 }
 
-void	ft_printf(t_philo *philo, char *s)
+void ft_printf(t_philo *philo, char *s)
 {
-	pthread_mutex_lock(philo->general_data->print_lock);
-	printf("%llu %d %s", (now_time() - philo->general_data->start_time),
-		philo->philo_id, s);
-	pthread_mutex_unlock(philo->general_data->print_lock);
+    pthread_mutex_lock(&philo->general_data->is_dead_lock);
+    if (philo->general_data->is_dead)
+    {
+        pthread_mutex_unlock(&philo->general_data->is_dead_lock);
+        return;
+    }
+    pthread_mutex_unlock(&philo->general_data->is_dead_lock);
+
+    pthread_mutex_lock(&philo->general_data->print_lock);
+    printf("%llu %d %s",
+        now_time() - philo->general_data->start_time,
+        philo->philo_id, s);
+    pthread_mutex_unlock(&philo->general_data->print_lock);
 }
