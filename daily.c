@@ -6,17 +6,23 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:10:50 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/28 12:04:08 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/28 12:58:51 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/*
+1- must_eat_count implementasyonu
+2- N = 1 philosopher edge case - yapıldıııı
+3- mutex destroy + free
+4- valgrind
+*/
+
 void	create_philo(t_general *general)
 {
 	int	i;
 
-	// printf("%d\n", general->time_to_sleep);
 	i = 0;
 	while (i < general->number_of_philosophers)
 	{
@@ -47,11 +53,6 @@ void	create_forks(t_general *general)
 	pthread_mutex_init(&general->meal_lock, NULL);
 	// mutexleri freele(?)
 }
-/*
-al → ye → bırak → uyu → düşün → tekrar dene
-
-*/
-
 void	*routine(void *philo)
 {
 	t_philo	*phi;
@@ -72,6 +73,14 @@ void	*routine(void *philo)
 			ft_printf(phi, "has taken a fork.\n");
 			pthread_mutex_lock(phi->r_fork);
 			ft_printf(phi, "has taken a fork.\n");
+		}
+		else if(phi->general_data->number_of_philosophers == 1)
+		{
+			pthread_mutex_lock(phi->r_fork);
+			ft_printf(phi, "has taken a fork.\n");
+			my_sleep(phi->general_data->time_to_die);
+			print_dead(&phi->general_data->philo_data[0]);
+			return(0);
 		}
 		else
 		{
@@ -98,7 +107,7 @@ void	creating_monitor(t_general *general)
 {
 	pthread_create(&general->is_dead_thread, NULL, monitor, general);
 }
-static void	print_dead(t_philo *philo)
+void	print_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->general_data->print_lock);
 	printf("%lld %d %s", now_time() - philo->general_data->start_time,
@@ -109,7 +118,7 @@ void	*monitor(void *general)
 {
 	t_general	*gen;
 	int			i;
-			long long last;
+	long long	last;
 
 	gen = (t_general *)general;
 	while (1)

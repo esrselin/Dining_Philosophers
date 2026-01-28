@@ -48,4 +48,5 @@ long long				now_time(void);
 void					ft_printf(t_philo *philo, char *s);
 void					*monitor(void *general);
 void					creating_monitor(t_general *general);
+void	print_dead(t_philo *philo);
 #endif
