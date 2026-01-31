@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:35:34 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/31 19:01:25 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/01 01:19:35 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	take_forks(t_philo *phi)
 	}
 	if (phi->philo_id % 2 == 0)
 	{
+		my_sleep(phi->general_data->time_to_eat / 10);
 		pthread_mutex_lock(phi->l_fork);
 		ft_printf(phi, "has taken a fork.\n");
 		pthread_mutex_lock(phi->r_fork);
@@ -49,8 +50,7 @@ int	take_forks(t_philo *phi)
 		ft_printf(phi, "has taken a fork.\n");
 		pthread_mutex_lock(phi->l_fork);
 	}
-	ft_printf(phi, "has taken a fork.\n");
-	return (0);
+	return (ft_printf(phi, "has taken a fork.\n"), 0);
 }
 
 void	eat(t_philo *phi)
