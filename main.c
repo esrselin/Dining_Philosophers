@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 18:25:54 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/28 21:00:30 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/01/31 19:24:18 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	main(int argc, char **argv)
 	while (i < general->number_of_philosophers)
 		pthread_join(general->all_philos[i++], NULL);
 	pthread_join(general->is_dead_thread, NULL);
-	if (general->is_dead)
-		return (0);
 	freendestroy(general);
 	return (0);
 }

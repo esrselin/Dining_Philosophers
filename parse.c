@@ -6,11 +6,35 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:13:34 by esakgul           #+#    #+#             */
-/*   Updated: 2026/01/28 20:27:09 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/04 15:46:13 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_atoi(const char *str)
+{
+	int	s;
+	int	r;
+
+	s = 1;
+	r = 0;
+	while ((*str >= 9 && *str <= 13) || (*str == 32))
+		str++;
+	if (*str == '-')
+	{
+		s = (-1);
+		str++;
+	}
+	else if (*str == '+')
+		str++;
+	while (*str >= '0' && '9' >= *str)
+	{
+		r = (r * 10) + (*str - '0');
+		str++;
+	}
+	return (r * s);
+}
 
 static int	is_digit(char c)
 {
@@ -35,6 +59,7 @@ static int	is_zero(char **av)
 	}
 	return (0);
 }
+
 int	parse(int ac, char **av)
 {
 	int	i;
@@ -60,37 +85,4 @@ int	parse(int ac, char **av)
 		i++;
 	}
 	return (0);
-}
-void	init_philo(t_general *general, int argc, char **argv)
-{
-	int	i;
-
-	general->number_of_philosophers = ft_atoi(argv[1]);
-	general->time_to_die = ft_atoi(argv[2]);
-	general->time_to_eat = ft_atoi(argv[3]);
-	general->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		general->must_eat_count = ft_atoi(argv[5]);
-	else
-		general->must_eat_count = -1;
-	general->all_philos = malloc(sizeof(pthread_t)
-			* general->number_of_philosophers);
-	general->forks = malloc(sizeof(pthread_mutex_t)
-			* general->number_of_philosophers);
-	general->philo_data = malloc(sizeof(t_philo)
-			* general->number_of_philosophers);
-	general->start_time = now_time();
-	general->is_dead = 0;
-	i = 0;
-	while (i < general->number_of_philosophers)
-	{
-		general->philo_data[i].last_meal_time = general->start_time;
-		general->philo_data[i].meal_count = 0;
-		i++;
-	}
-	if (!general->all_philos || !general->forks || !general->philo_data)
-		return ;
-	create_forks(general);
-	create_philo(general);
-	creating_monitor(general);
 }
