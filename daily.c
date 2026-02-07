@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:10:50 by esakgul           #+#    #+#             */
-/*   Updated: 2026/02/04 15:57:21 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/07 05:37:13 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	*routine(void *philo)
 			break ;
 		}
 		eat_sleep_n_think(phi);
-		usleep(500);
 	}
 	return (NULL);
 }
@@ -48,6 +47,5 @@ void	*monitor(void *general)
 			return (NULL);
 		if (check_all_full(gen))
 			return (NULL);
-		usleep(1000);
 	}
 }

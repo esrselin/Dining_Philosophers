@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:41:09 by esakgul           #+#    #+#             */
-/*   Updated: 2026/02/04 16:17:16 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/07 05:38:30 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,17 @@ int	take_forks(t_philo *phi)
 	}
 	if (phi->philo_id % 2 == 0)
 	{
-		my_sleep(phi->general_data->time_to_eat / 10);
 		pthread_mutex_lock(phi->l_fork);
-		ft_printf(phi, "has taken a fork.");
 		pthread_mutex_lock(phi->r_fork);
 	}
 	else
 	{
 		pthread_mutex_lock(phi->r_fork);
-		ft_printf(phi, "has taken a fork.");
 		pthread_mutex_lock(phi->l_fork);
 	}
-	return (ft_printf(phi, "has taken a fork."), 0);
+	ft_printf(phi, "has taken a fork.");
+	ft_printf(phi, "has taken a fork.");
+	return (0);
 }
 
 void	eat_sleep_n_think(t_philo *phi)
@@ -55,12 +54,7 @@ void	eat_sleep_n_think(t_philo *phi)
 	ft_printf(phi, "is sleeping.");
 	my_sleep(phi->general_data->time_to_sleep);
 	ft_printf(phi, "is thinking.");
-	if (phi->general_data->time_to_eat >= phi->general_data->time_to_sleep)
-	{
-		thinking_time = (phi->general_data->time_to_eat
-				- phi->general_data->time_to_sleep);
-		my_sleep(thinking_time + 5);
-	}
+	my_sleep(1);
 }
 
 int	check_dead(t_philo *phi)

@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:03:14 by esakgul           #+#    #+#             */
-/*   Updated: 2026/02/07 00:39:15 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/07 05:41:58 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void					eat_sleep_n_think(t_philo *phi);
 void					*routine(void *philo);
 void					*monitor(void *general);
 int						check_dead(t_philo *phi);
-int						check_stop(t_general *gen);
 int						check_starving(t_general *gen);
 int						check_all_full(t_general *gen);
 void					set_stop(t_general *gen);

@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:53:25 by esakgul           #+#    #+#             */
-/*   Updated: 2026/02/04 17:21:05 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/07 05:38:55 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	create_all(t_general *general)
 {
 	int	i;
 
+	pthread_mutex_init(&general->print_lock, NULL);
+	pthread_mutex_init(&general->is_dead_lock, NULL);
+	pthread_mutex_init(&general->meal_lock, NULL);
+	pthread_create(&general->is_dead_thread, NULL, monitor, general);
 	i = 0;
 	while (i < general->number_of_philosophers)
 	{
@@ -50,15 +54,11 @@ void	create_all(t_general *general)
 			&general->philo_data[i]);
 		i++;
 	}
-	pthread_mutex_init(&general->print_lock, NULL);
-	pthread_mutex_init(&general->is_dead_lock, NULL);
-	pthread_mutex_init(&general->meal_lock, NULL);
-	pthread_create(&general->is_dead_thread, NULL, monitor, general);
 }
 
 void	init_philo(t_general *general, int argc, char **argv)
 {
-	if (fill_general_data(general,argc,argv))
+	if (fill_general_data(general, argc, argv))
 		return ;
 	create_all(general);
 }
