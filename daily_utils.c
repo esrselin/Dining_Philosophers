@@ -6,7 +6,7 @@
 /*   By: esakgul <esakgul@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:41:09 by esakgul           #+#    #+#             */
-/*   Updated: 2026/02/07 05:38:30 by esakgul          ###   ########.fr       */
+/*   Updated: 2026/02/07 05:43:07 by esakgul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	take_forks(t_philo *phi)
 
 void	eat_sleep_n_think(t_philo *phi)
 {
-	long long	thinking_time;
+	//long long	thinking_time;
 
 	pthread_mutex_lock(&phi->general_data->meal_lock);
 	phi->last_meal_time = now_time();
